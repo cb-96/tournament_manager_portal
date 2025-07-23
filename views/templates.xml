@@ -1,0 +1,76 @@
+<odoo>
+<template id="portal_my_teams" name="My Teams">
+  <t t-call="website.layout">
+    <h2>My Teams</h2>
+    <ul>
+    <t t-foreach="teams" t-as="team">
+      <li>
+        <a t-att-href="'/my/team/%d' % team.id">
+          <t t-esc="team.name"/>
+        </a>
+      </li>
+    </t>
+    </ul>
+  </t>
+</template>
+
+<template id="portal_team_view" name="Team View">
+  <t t-call="website.layout">
+    <h2><t t-esc="team.name"/> (<t t-esc="team.club_id.name"/> - <t t-esc="team.category_id.name"/>)</h2>
+    <a t-att-href="'/my/team/%d/add_player' % team.id">Add player</a>
+    <h3>Roster:</h3>
+    <ul>
+      <t t-foreach="roster" t-as="player">
+        <li><t t-esc="player.name"/> (Birthdate: <t t-esc="player.birthdate"/>)</li>
+      </t>
+    </ul>
+    <h3>Upcoming Matches:</h3>
+    <ul>
+    <t t-foreach="matches" t-as="match">
+      <li>
+        <t t-esc="match.date"/>:
+        <t t-esc="match.team1_id.name"/> vs <t t-esc="match.team2_id.name"/>
+        <a t-att-href="'/my/match/%d/pick_lineup' % match.id">Pick Lineup</a>
+      </li>
+    </t>
+    </ul>
+    <a href="/my/teams">Back to My Teams</a>
+  </t>
+</template>
+
+<template id="portal_add_player" name="Add Player">
+  <t t-call="website.layout">
+    <h2>Add Player for <t t-esc="team.name"/></h2>
+    <form method="POST">
+      <label>Name:</label><input type="text" name="name" required="1"/><br/>
+      <label>Birthdate:</label><input type="date" name="birthdate" required="1"/><br/>
+      <button type="submit">Add Player</button>
+      <a t-att-href="'/my/team/%d' % team.id">Back</a>
+    </form>
+  </t>
+</template>
+
+<template id="portal_pick_lineup" name="Pick Lineup for Match">
+  <t t-call="website.layout">
+    <h2>Pick lineup for <t t-esc="match.date"/>: <t t-esc="team.name"/></h2>
+    <t t-if="error">
+      <div class="alert alert-danger" t-raw="error"/>
+    </t>
+    <form method="POST">
+      <ul>
+      <t t-foreach="roster" t-as="player">
+        <li>
+          <label>
+            <input type="checkbox" name="player_ids" t-att-value="player.id"
+              t-att-checked="'checked' if player.id in selected else None"/>
+            <t t-esc="player.name"/> (DOB: <t t-esc="player.birthdate"/>)
+          </label>
+        </li>
+      </t>
+      </ul>
+      <button type="submit">Save Lineup</button>
+      <a t-att-href="'/my/team/%d' % team.id">Back</a>
+    </form>
+  </t>
+</template>
+</odoo>
