@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import api, models, fields
 
 class TournamentTeam(models.Model):
     _name = 'tournament.team'
@@ -12,3 +12,10 @@ class TournamentTeam(models.Model):
     # link with memberships:
     membership_ids = fields.One2many('tournament.membership', 'team_id', string="Memberships")
     tournament_ids = fields.Many2many('tournament.tournament', string="Tournaments")
+
+    @api.model
+    def create(self, vals):
+        club = self.env['tournament.club'].browse(vals.get('club_id'))
+        if self.env.user not in club.manager_ids:
+            raise ValidationError("You can only create teams for clubs you manage.")
+        return super().create(vals)

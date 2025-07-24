@@ -1,4 +1,25 @@
 <odoo>
+<template id="portal_add_team" name="Add Team">
+  <t t-call="website.layout">
+    <div class="container">
+      <h2>Add Team for <t t-esc="club.name"/></h2>
+      <form method="POST">
+        <label>Team Name:</label>
+        <input type="text" name="name" required="1"/><br/>
+        <label>Category:</label>
+        <select name="category_id" required="1">
+          <t t-foreach="categories" t-as="category">
+            <option t-att-value="category.id"><t t-esc="category.name"/></option>
+          </t>
+        </select><br/>
+
+        <button type="submit">Create Team</button>
+        <a href="/my/teams">Back to My Teams</a>
+      </form>
+    </div>
+  </t>
+</template>
+
 <template id="portal_my_teams" name="My Teams">
   <t t-call="website.layout">
     <h2>My Teams</h2>

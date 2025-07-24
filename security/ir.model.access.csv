@@ -7,7 +7,6 @@ access_membership,membership,model_tournament_membership,base.group_system,1,1,1
 access_match,match,model_tournament_match,base.group_system,1,1,1,0
 access_lineup,lineup,model_tournament_lineup,base.group_system,1,1,1,0
 access_tournament,tournament,model_tournament_tournament,base.group_system,1,0,1,0
-# Website/portal users: to allow them self-service
 access_player_portal,player,model_tournament_player,base.group_portal,1,0,1,0
 access_membership_portal,membership,model_tournament_membership,base.group_portal,1,0,1,0
 access_lineup_portal,lineup,model_tournament_lineup,base.group_portal,1,0,1,0

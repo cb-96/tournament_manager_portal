@@ -48,6 +48,25 @@ class TournamentPortal(http.Controller):
             'tournament': tournament,
         })
 
+    @http.route(['/my/team/add'], type='http', auth="user", website=True)
+    def portal_add_team(self, **kw):
+        categories = request.env['team.category'].search([])
+        club = request.env.user.partner_id.club_id
+        return requset.render("tournament_manager_portal.portal_add_team", {
+            'categories': categories,
+            'club': club,
+        })
+
+    @http.route(['/my/team/add'], type='http', auth="user", website=True, methods=['POST'])
+    def portal_add_teams_post(self, **post):
+        club = request.env.user.partner_id.club_id
+        request.env['team.team'].sudo().create({
+            'name': post.get('name'),
+            'category_id': int(post.get('category_id')),
+            'club_id': club.id,
+        })
+        return request.redirect('/my/teams')
+
     @http.route(['/my/match/<int:match_id>/pick_lineup'], auth='user', type='http', website=True, methods=['GET', 'POST'])
     def pick_lineup(self, match_id, **post):
         match = request.env['tournament.match'].sudo().browse(match_id)

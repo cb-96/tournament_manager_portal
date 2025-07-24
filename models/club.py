@@ -5,3 +5,4 @@ class TournamentClub(models.Model):
     _description = 'Club'
 
     name = fields.Char(required=True)
+    managers_ids = fields.Many2many('res.users', string='Managers')
