@@ -20,15 +20,14 @@
         </field>
     </record>
     <menuitem id="tournament_manager_root_menu" name="Tournament Manager" sequence="10"/>
-    <menuitem id="tournament_category_menu" name="Categories"
-              parent="tournament_manager_root_menu"
-              action="action_tournament_category"/>
-
     <record id="action_tournament_category" model="ir.actions.act_window">
         <field name="name">Categories</field>
         <field name="res_model">tournament.category</field>
         <field name="view_mode">tree,form</field>
     </record>
+    <menuitem id="tournament_category_menu" name="Categories"
+              parent="tournament_manager_root_menu"
+              action="action_tournament_category"/>
 
     <!-- Repeat the above pattern for clubs, teams, etc. -->
 
