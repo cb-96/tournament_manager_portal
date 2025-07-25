@@ -10,7 +10,9 @@
         'security/ir.model.access.csv',
 	'views/portal_views.xml',
         'views/templates.xml',
+        'views/backend_views.xml',
     ],
     'installable': True,
     'application': True,
+    'license': 'LGPL-3',
 }

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tournament Category -->
+    <record id="view_tournament_category_tree" model="ir.ui.view">
+        <field name="name">tournament.category.tree</field>
+        <field name="model">tournament.category</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_tournament_category_form" model="ir.ui.view">
+        <field name="name">tournament.category.form</field>
+        <field name="model">tournament.category</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="name"/>
+            </form>
+        </field>
+    </record>
+    <menuitem id="tournament_manager_root_menu" name="Tournament Manager" sequence="10"/>
+    <menuitem id="tournament_category_menu" name="Categories"
+              parent="tournament_manager_root_menu"
+              action="action_tournament_category"/>
+
+    <record id="action_tournament_category" model="ir.actions.act_window">
+        <field name="name">Categories</field>
+        <field name="res_model">tournament.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Repeat the above pattern for clubs, teams, etc. -->
+
+    <!-- Example: Tournament Team -->
+    <record id="view_tournament_team_tree" model="ir.ui.view">
+        <field name="name">tournament.team.tree</field>
+        <field name="model">tournament.team</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="club_id"/>
+                <field name="category_id"/>
+                <field name="manager_user_id"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_tournament_team_form" model="ir.ui.view">
+        <field name="name">tournament.team.form</field>
+        <field name="model">tournament.team</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="name"/>
+                <field name="club_id"/>
+                <field name="category_id"/>
+                <field name="manager_user_id"/>
+            </form>
+        </field>
+    </record>
+    <menuitem id="tournament_team_menu" name="Teams"
+              parent="tournament_manager_root_menu"
+              action="action_tournament_team"/>
+    <record id="action_tournament_team" model="ir.actions.act_window">
+        <field name="name">Teams</field>
+        <field name="res_model">tournament.team</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
