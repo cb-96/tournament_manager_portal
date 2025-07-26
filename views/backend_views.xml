@@ -56,12 +56,12 @@
             </form>
         </field>
     </record>
-    <menuitem id="tournament_team_menu" name="Teams"
-              parent="tournament_manager_root_menu"
-              action="action_tournament_team"/>
     <record id="action_tournament_team" model="ir.actions.act_window">
         <field name="name">Teams</field>
         <field name="res_model">tournament.team</field>
         <field name="view_mode">tree,form</field>
     </record>
+    <menuitem id="tournament_team_menu" name="Teams"
+              parent="tournament_manager_root_menu"
+              action="action_tournament_team"/>
 </odoo>
