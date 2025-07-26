@@ -133,7 +133,7 @@
         <field name="model">tournament.match</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name"/>
+                <field name="tournament_id"/>
                 <field name="team1_id"/>
                 <field name="team2_id"/>
                 <field name="date"/>
@@ -145,7 +145,7 @@
         <field name="model">tournament.match</field>
         <field name="arch" type="xml">
             <form>
-                <field name="name"/>
+                <field name="tournament_id"/>
                 <field name="team1_id"/>
                 <field name="team2_id"/>
                 <field name="date"/>
