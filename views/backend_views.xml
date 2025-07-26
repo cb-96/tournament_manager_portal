@@ -78,8 +78,6 @@
         <field name="arch" type="xml">
             <form>
                 <field name="name"/>
-                <field name="start_date"/>
-                <field name="end_date"/>
                 <field name="category_id"/>
             </form>
         </field>
