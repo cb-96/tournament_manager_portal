@@ -5,7 +5,7 @@
     'category': "Website",
     'website': "http://192.168.178.68:8069",
     'summary': "Let team managers create players and lineups for matches via Odoo Website Portal.",
-    'depends': ['website', 'portal'],
+    'depends': ['website', 'portal', 'base'],
     'data': [
         'security/ir.model.access.csv',
 	'views/portal_views.xml',
