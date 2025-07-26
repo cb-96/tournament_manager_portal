@@ -10,6 +10,7 @@ class Tournament(models.Model):
         ('round_robin', 'Round Robin'),
         ('groups', 'Groups')
     ], required=True, default='knockout')
+    category_id = fields.Many2one('tournament.category', string='Category', required=True)
     date_start = fields.Date()
     date_end = fields.Date()
     team_ids = fields.Many2many('tournament.team', string='Teams')

@@ -66,6 +66,8 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
                 <field name="category_id"/>
             </list>
         </field>
@@ -76,6 +78,8 @@
         <field name="arch" type="xml">
             <form>
                 <field name="name"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
                 <field name="category_id"/>
             </form>
         </field>
