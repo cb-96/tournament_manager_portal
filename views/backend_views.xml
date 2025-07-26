@@ -38,7 +38,6 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                <field name="location"/>
             </list>
         </field>
     </record>
@@ -48,7 +47,6 @@
         <field name="arch" type="xml">
             <form>
                 <field name="name"/>
-                <field name="location"/>
             </form>
         </field>
     </record>
