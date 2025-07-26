@@ -23,7 +23,7 @@
     <record id="action_tournament_category" model="ir.actions.act_window">
         <field name="name">Categories</field>
         <field name="res_model">tournament.category</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
     <menuitem id="tournament_category_menu" name="Categories"
               parent="tournament_manager_root_menu"
@@ -59,7 +59,7 @@
     <record id="action_tournament_team" model="ir.actions.act_window">
         <field name="name">Teams</field>
         <field name="res_model">tournament.team</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
     <menuitem id="tournament_team_menu" name="Teams"
               parent="tournament_manager_root_menu"
