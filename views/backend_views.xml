@@ -66,8 +66,6 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                <field name="start_date"/>
-                <field name="end_date"/>
                 <field name="category_id"/>
             </list>
         </field>
@@ -158,56 +156,6 @@
     <menuitem id="tournament_match_menu" name="Matches"
               parent="tournament_manager_root_menu"
               action="action_tournament_match"/>
-    <record id="view_tournament_match_form_edit" model="ir.ui.view">
-        <field name="name">tournament.match.form.edit</field>
-        <field name="model">tournament.match</field>
-        <field name="arch" type="xml">
-            <form>
-                <group>
-                    <field name="name"/>
-                    <field name="team1_id"/>
-                    <field name="team2_id"/>
-                    <field name="date"/>
-                </group>
-                <footer>
-                    <button string="Save" type="object" name="action_save_match" class="btn-primary"/>
-                </footer>
-            </form>
-        </field>
-    </record>
-    <record id="view_tournament_match_form_view" model="ir.ui.view">
-        <field name="name">tournament.match.form.view</field>
-        <field name="model">tournament.match</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="team1_id"/>
-                        <field name="team2_id"/>
-                        <field name="date"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-    <record id="view_tournament_match_form_create" model="ir.ui.view">
-        <field name="name">tournament.match.form.create</field>
-        <field name="model">tournament.match</field>
-        <field name="arch" type="xml">
-            <form>
-                <group>
-                    <field name="name"/>
-                    <field name="team1_id"/>
-                    <field name="team2_id"/>
-                    <field name="date"/>
-                </group>
-                <footer>
-                    <button string="Create Match" type="object" name="action_create_match" class="btn-primary"/>
-                </footer>
-            </form>
-        </field>
-    </record>
 
     <!-- Team manager -->
     <record id="view_tournament_team_manager_tree" model="ir.ui.view">
