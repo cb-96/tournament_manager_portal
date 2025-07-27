@@ -9,7 +9,7 @@ class TournamentTeam(models.Model):
     club_id = fields.Many2one('tournament.club', string='Club', required=True)
     category_id = fields.Many2one('tournament.category', string='Category', required=True)
     level = fields.Integer(string='Team Level', default=1)  # 1=A, 2=B, 3=C etc
-    manager_user_id = fields.Many2one('res.users', string="Manager")
+    manager_user_id = fields.Many2one('res.partner', string="Manager")
     # link with memberships:
     membership_ids = fields.One2many('tournament.membership', 'team_id', string="Memberships")
     tournament_ids = fields.Many2many('tournament.tournament', string="Tournaments")

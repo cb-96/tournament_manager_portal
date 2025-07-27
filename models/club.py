@@ -10,6 +10,10 @@ class TournamentClub(models.Model):
     _name = 'tournament.club'
     _description = 'Club'
 
-    name = fields.Char(required=True)
-    manager_ids = fields.Many2many('res.users', string='Managers')
+    club_id = fields.Many2one('res.partner', 
+                              string='Club', 
+                              required=True, 
+                              domain=[('is_company', '=', True)],
+                              ondelete='cascade')
+    manager_ids = fields.Many2many('res.partner', string='Managers')
     player_ids = fields.Many2many('tournament.player', string='Players')
