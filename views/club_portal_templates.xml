@@ -1,0 +1,62 @@
+<template id="club_portal_home" name="Club Portal Home" inherit_id="portal.portal_my_home">
+    <xpath expr="//div[@id='portal_content']" position="inside">
+        <div class="oe_structure">
+            <h2>My Club Management</h2>
+            <ul>
+                <li><a href="/my/players">Manage Players</a></li>
+                <li><a href="/my/lineups">Create Line-ups</a></li>
+            </ul>
+        </div>
+    </xpath>
+</template>
+<template id="portal_my_players" name="My Players">
+  <t t-call="website.layout">
+    <h2>My Players</h2>
+    <ul>
+    <t t-foreach="players" t-as="player">
+      <li>
+        <a t-att-href="'/my/player/%d' % player.id">
+          <t t-esc="player.name"/>
+        </a>
+      </li>
+    </t>
+    </ul>
+  </t>
+</template>
+<template id="portal_create_team" name="Create Team">
+  <t t-call="website.layout">
+    <h2>Create New Team</h2>
+    <div class="oe_structure">
+      <form method="POST" action="/my/create_team">
+        <label>Team Name:</label><input type="text" name="name" required="1"/><br/>
+        <label>Club:</label>
+        <select name="club_id" required="1">
+          <t t-foreach="clubs" t-as="club">
+            <option t-att-value="club.id"><t t-esc="club.name"/></option>
+          </t>
+        </select><br/>
+        <label>Category:</label>
+        <select name="category_id" required="1">
+          <t t-foreach="categories" t-as="category">
+            <option t-att-value="category.id"><t t-esc="category.name"/></option>
+          </t>
+        </select><br/>
+        <button type="submit">Create Team</button>
+        <a href="/my/teams">Back to My Teams</a>
+      </form>
+    </div>
+  </t>
+</template>
+<template id="portal_player_view" name="Player View">
+  <t t-call="website.layout">
+    <h2><t t-esc="player.name"/> (Club: <t t-esc="player.club_id.name"/>)</h2>
+    <p>Birthdate: <t t-esc="player.birthdate"/></p>
+    <h3>Teams:</h3>
+    <ul>
+      <t t-foreach="player.team_ids" t-as="team">
+        <li><t t-esc="team.name"/> (<t t-esc="team.category_id.name"/>)</li>
+      </t>
+    </ul>
+    <a href="/my/players">Back to My Players</a>
+  </t>
+</template>

@@ -52,7 +52,7 @@ class TournamentPortal(http.Controller):
     def portal_add_team(self, **kw):
         categories = request.env['team.category'].search([])
         club = request.env.user.partner_id.club_id
-        return requset.render("tournament_manager_portal.portal_add_team", {
+        return request.render("tournament_manager_portal.portal_add_team", {
             'categories': categories,
             'club': club,
         })

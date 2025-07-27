@@ -5,5 +5,5 @@ class TournamentClub(models.Model):
     _description = 'Club'
 
     name = fields.Char(required=True)
-    managers_ids = fields.Many2many('res.users', string='Managers')
-    players_ids = fields.Many2many('tournament.player', string='Players')
+    manager_ids = fields.Many2many('res.users', string='Managers')
+    player_ids = fields.Many2many('tournament.player', string='Players')
