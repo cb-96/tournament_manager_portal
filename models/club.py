@@ -1,6 +1,7 @@
 from odoo import models, fields
 
 class TournamentClub(models.Model):
+    _inherit = 'res.partner'
     _name = 'tournament.club'
     _description = 'Club'
 
