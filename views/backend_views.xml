@@ -37,7 +37,7 @@
         <field name="model">tournament.club</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name"/>
+                <field name="club_id"/>
                 <field name="manager_ids"/>
             </list>
         </field>
@@ -47,7 +47,7 @@
         <field name="model">tournament.club</field>
         <field name="arch" type="xml">
             <form>
-                <field name="name"/>
+                <field name="club_id"/>
                 <field name="manager_ids"/>
             </form>
         </field>
