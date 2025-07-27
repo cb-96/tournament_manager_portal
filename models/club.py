@@ -3,7 +3,7 @@ from odoo import models, fields
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    is_club_managre = fields.Boolean(string='Is Club Manager', default=False)
+    is_club_manager = fields.Boolean(string='Is Club Manager', default=False)
 
 class TournamentClub(models.Model):
     #_inherit = 'res.partner'
