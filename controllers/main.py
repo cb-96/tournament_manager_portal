@@ -50,7 +50,7 @@ class TournamentPortal(http.Controller):
 
     @http.route(['/my/team/add'], type='http', auth="user", website=True)
     def portal_add_team(self, **kw):
-        categories = request.env['team.category'].search([])
+        categories = request.env['tournament.category'].search([])
         club = request.env.user.partner_id.club_id
         return request.render("tournament_manager_portal.portal_add_team", {
             'categories': categories,
