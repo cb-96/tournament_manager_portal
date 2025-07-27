@@ -6,4 +6,4 @@ class TournamentClub(models.Model):
 
     name = fields.Char(required=True)
     managers_ids = fields.Many2many('res.users', string='Managers')
-    players_ids = fields.One2many('tournament.player', 'club_id', string='Players')
+    players_ids = fields.One2many('tournament.player', string='Players')
