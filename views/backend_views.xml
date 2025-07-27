@@ -70,7 +70,7 @@
                 <field name="name"/>
                 <field name="date_start"/>
                 <field name="date_end"/>
-                <field name="category_id"/>
+                <field name="category_ids"/>
             </list>
         </field>
     </record>
@@ -82,7 +82,7 @@
                 <field name="name"/>
                 <field name="date_start"/>
                 <field name="date_end"/>
-                <field name="category_id"/>
+                <field name="category_ids"/>
             </form>
         </field>
     </record>
