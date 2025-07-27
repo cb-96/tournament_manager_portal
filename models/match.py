@@ -10,9 +10,9 @@ class Tournament(models.Model):
         ('round_robin', 'Round Robin'),
         ('groups', 'Groups')
     ], required=True, default='knockout')
-    category_id = fields.Many2one('tournament.category', string='Category', required=True)
     date_start = fields.Date()
     date_end = fields.Date()
+    category_ids = fields.Many2many('tournament.category', string='Category')
     team_ids = fields.Many2many('tournament.team', string='Teams')
     match_ids = fields.One2many('tournament.match', 'tournament_id', string='Matches')
 
@@ -21,6 +21,7 @@ class TournamentMatch(models.Model):
     _description = "Match"
 
     tournament_id = fields.Many2one('tournament.tournament', required=True)
+    category_id = fields.Many2one('tournament.category', string='Category', required=True)
     team1_id = fields.Many2one('tournament.team', string='Team 1', required=True)
     team2_id = fields.Many2one('tournament.team', string='Team 2', required=True)
     date = fields.Datetime()

@@ -136,6 +136,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="tournament_id"/>
+                <field name="category_id"/>
                 <field name="team1_id"/>
                 <field name="team2_id"/>
                 <field name="date"/>
@@ -148,6 +149,7 @@
         <field name="arch" type="xml">
             <form>
                 <field name="tournament_id"/>
+                <field name="category_id"/>
                 <field name="team1_id"/>
                 <field name="team2_id"/>
                 <field name="date"/>
