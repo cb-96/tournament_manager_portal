@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class TournamentClub(models.Model):
     _name = 'tournament.club'
