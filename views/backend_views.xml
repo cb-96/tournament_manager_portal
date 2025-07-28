@@ -57,6 +57,9 @@
         <field name="res_model">tournament.club</field>
         <field name="view_mode">list,form</field>
     </record>
+    <menuitem id="tournament_club_menu" name="Clubs"
+              parent="tournament_manager_root_menu"
+              action="action_tournament_club"/>
             
     <!-- Tournament -->
     <record id="view_tournament_tree" model="ir.ui.view">
