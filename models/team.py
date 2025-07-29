@@ -16,7 +16,12 @@ class TournamentTeam(models.Model):
 
     @api.model
     def create(self, vals):
-        club = self.env['tournament.club'].browse(vals.get('club_id'))
-        if self.env.user not in club.manager_ids:
+        club_id = vals.get('club_id')
+        if not club_id:
+            raise ValidationError("Club must be specified.")
+        club = self.env['tournament.club'].browse(club_id)
+        if not club.exists():
+            raise ValidationError("Selected club does not exist.")
+        if self.env.user.partner_id not in club.manager_ids:
             raise ValidationError("You can only create teams for clubs you manage.")
         return super().create(vals)
