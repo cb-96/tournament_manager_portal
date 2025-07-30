@@ -2,17 +2,18 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 class TournamentLineup(models.Model):
+    """Represents a lineup entry for a match (player assigned to a team in a match)."""
     _name = 'tournament.lineup'
     _description = 'Lineup'
     
-    match_id = fields.Many2one('tournament.match', required=True)
-    player_id = fields.Many2one('tournament.player', required=True)
-    team_id = fields.Many2one('tournament.team', required=True)
+    match_id = fields.Many2one('tournament.match', required=True, help="Match")
+    player_id = fields.Many2one('tournament.player', required=True, help="Player")
+    team_id = fields.Many2one('tournament.team', required=True, help="Team")
 
     @api.model
     def create(self, vals):
+        """Ensure player is eligible for the team in the tournament."""
         # --- ELIGIBILITY LOGIC (simplified) ---
-        # You can expand this with your full constraint logic!
         player = self.env['tournament.player'].browse(vals.get('player_id'))
         team = self.env['tournament.team'].browse(vals.get('team_id'))
         match = self.env['tournament.match'].browse(vals.get('match_id'))
@@ -24,6 +25,5 @@ class TournamentLineup(models.Model):
             ('tournament_id', '=', tournament.id)
         ], limit=1)
         if not membership:
-            # check for B->A or similar - for brevity, not duplicated here.
             raise ValidationError("Player is not registered for this team in this tournament.")
         return super().create(vals)
