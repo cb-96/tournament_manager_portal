@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from datetime import datetime, timedelta, time
 
 class Tournament(models.Model):
     """Represents a tournament event."""
@@ -13,10 +14,16 @@ class Tournament(models.Model):
     ], required=True, default='knockout', help="Type of tournament format")
     date_start = fields.Date(help="Start date")
     date_end = fields.Date(help="End date")
+    days_count = fields.Integer(string='Number of Days', required=True, default=1, help="How many days the tournament lasts")
+    day_start_time = fields.Float(string='Day Start Time', required=True, default=9.0, help="Start time each day (e.g. 9.0 for 9:00)")
+    day_end_time = fields.Float(string='Day End Time', required=True, default=18.0, help="End time each day (e.g. 18.0 for 18:00)")
     category_ids = fields.Many2many('tournament.category', string='Category', help="Categories included")
     team_ids = fields.Many2many('tournament.team', string='Teams', help="Participating teams")
     match_ids = fields.One2many('tournament.match', 'tournament_id', string='Matches', help="Matches in this tournament")
     season = fields.Char(string='Year', required=False, help="Season or year")
+    match_duration_minutes = fields.Integer(
+        string='Match Duration (minutes)', required=True, default=60,
+        help="Duration of each match in minutes. Used to calculate number of matches per day.")
 
     number_of_teams = fields.Integer(string='Number of Teams', compute='_compute_number_of_teams', store=False, help="Total number of teams in this tournament")
 
@@ -25,6 +32,74 @@ class Tournament(models.Model):
         """Compute the number of teams in the tournament."""
         for rec in self:
             rec.number_of_teams = len(rec.team_ids)
+
+    def generate_schedule(self):
+        """Generate the match schedule based on tournament type."""
+        if self.tournament_type == 'knockout':
+            self._generate_knockout_schedule()
+        elif self.tournament_type == 'round_robin':
+            self._generate_round_robin_schedule()
+        # Add more types as needed
+
+    def _generate_knockout_schedule(self):
+        """Generate a bracket (knockout) schedule."""
+        teams = list(self.team_ids)
+        if len(teams) < 2:
+            return
+        matches = []
+        round_teams = teams
+        round_num = 1
+        while len(round_teams) > 1:
+            next_round = []
+            for i in range(0, len(round_teams), 2):
+                if i+1 < len(round_teams):
+                    matches.append((round_teams[i], round_teams[i+1], round_num))
+                    next_round.append(None)  # Placeholder for winner
+            round_teams = next_round
+            round_num += 1
+        self._assign_match_times(matches)
+
+    def _generate_round_robin_schedule(self):
+        """Generate a round robin schedule (all vs all)."""
+        teams = list(self.team_ids)
+        matches = []
+        for i in range(len(teams)):
+            for j in range(i+1, len(teams)):
+                matches.append((teams[i], teams[j], 1))  # round=1 for all
+        self._assign_match_times(matches)
+
+    def _assign_match_times(self, matches):
+        """Assigns match times over the tournament days and time slots, using match duration."""
+        start_date = self.date_start or fields.Date.today()
+        day_count = self.days_count or 1
+        start_time = self.day_start_time or 9.0
+        end_time = self.day_end_time or 18.0
+        match_duration = self.match_duration_minutes or 60
+        # Calculate number of matches per day
+        total_minutes = int((end_time - start_time) * 60)
+        slots_per_day = total_minutes // match_duration
+        match_idx = 0
+        for day in range(day_count):
+            for slot in range(slots_per_day):
+                if match_idx >= len(matches):
+                    break
+                team1, team2, round_num = matches[match_idx]
+                match_time = (start_time * 60) + (slot * match_duration)
+                hour = int(match_time // 60)
+                minute = int(match_time % 60)
+                match_datetime = datetime.combine(
+                    fields.Date.from_string(start_date) + timedelta(days=day),
+                    time(hour, minute)
+                )
+                self.env['tournament.match'].create({
+                    'tournament_id': self.id,
+                    'team1_id': team1.id,
+                    'team2_id': team2.id,
+                    'date': match_datetime,
+                })
+                match_idx += 1
+            if match_idx >= len(matches):
+                break
 
 class TournamentMatch(models.Model):
     """Represents a match between two teams in a tournament."""
