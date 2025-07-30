@@ -24,7 +24,6 @@ class Tournament(models.Model):
     match_duration_minutes = fields.Integer(
         string='Match Duration (minutes)', required=True, default=60,
         help="Duration of each match in minutes. Used to calculate number of matches per day.")
-
     number_of_teams = fields.Integer(string='Number of Teams', compute='_compute_number_of_teams', store=False, help="Total number of teams in this tournament")
 
     @api.depends('team_ids')
@@ -34,38 +33,41 @@ class Tournament(models.Model):
             rec.number_of_teams = len(rec.team_ids)
 
     def generate_schedule(self):
-        """Generate the match schedule based on tournament type."""
-        if self.tournament_type == 'knockout':
-            self._generate_knockout_schedule()
-        elif self.tournament_type == 'round_robin':
-            self._generate_round_robin_schedule()
+        """Generate the match schedule based on tournament type, per category."""
+        for category in self.category_ids:
+            teams = self.team_ids.filtered(lambda t: t.category_id == category)
+            if self.tournament_type == 'knockout':
+                self._generate_knockout_schedule_for_category(category, teams)
+            elif self.tournament_type == 'round_robin':
+                self._generate_round_robin_schedule_for_category(category, teams)
         # Add more types as needed
 
-    def _generate_knockout_schedule(self):
-        """Generate a bracket (knockout) schedule."""
-        teams = list(self.team_ids)
+    def _generate_knockout_schedule_for_category(self, category, teams):
+        """Generate a bracket (knockout) schedule for a category."""
         if len(teams) < 2:
             return
         matches = []
-        round_teams = teams
+        round_teams = list(teams)
         round_num = 1
         while len(round_teams) > 1:
             next_round = []
             for i in range(0, len(round_teams), 2):
                 if i+1 < len(round_teams):
-                    matches.append((round_teams[i], round_teams[i+1], round_num))
+                    matches.append((round_teams[i], round_teams[i+1], round_num, category))
                     next_round.append(None)  # Placeholder for winner
             round_teams = next_round
             round_num += 1
         self._assign_match_times(matches)
 
-    def _generate_round_robin_schedule(self):
-        """Generate a round robin schedule (all vs all)."""
-        teams = list(self.team_ids)
+    def _generate_round_robin_schedule_for_category(self, category, teams):
+        """Generate a round robin schedule (all vs all) for a category."""
+        if len(teams) < 2:
+            return
         matches = []
+        teams = list(teams)
         for i in range(len(teams)):
             for j in range(i+1, len(teams)):
-                matches.append((teams[i], teams[j], 1))  # round=1 for all
+                matches.append((teams[i], teams[j], 1, category))  # round=1 for all
         self._assign_match_times(matches)
 
     def _assign_match_times(self, matches):
@@ -83,7 +85,7 @@ class Tournament(models.Model):
             for slot in range(slots_per_day):
                 if match_idx >= len(matches):
                     break
-                team1, team2, round_num = matches[match_idx]
+                team1, team2, round_num, category = matches[match_idx]
                 match_time = (start_time * 60) + (slot * match_duration)
                 hour = int(match_time // 60)
                 minute = int(match_time % 60)
@@ -93,6 +95,7 @@ class Tournament(models.Model):
                 )
                 self.env['tournament.match'].create({
                     'tournament_id': self.id,
+                    'category_id': category.id,
                     'team1_id': team1.id,
                     'team2_id': team2.id,
                     'date': match_datetime,

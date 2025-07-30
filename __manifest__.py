@@ -8,11 +8,11 @@
     'depends': ['website', 'portal', 'base'],
     'data': [
         'security/ir.model.access.csv',
-	'views/portal_views.xml',
+	    'views/portal_views.xml',
         'views/templates.xml',
         'views/backend_views.xml',
         'views/tournament_views.xml',
-        'views/tournament_dashboard.xml',
+        'views/tournament_dashboard_template.xml',
         'views/club_portal_templates.xml',
     ],
     'installable': True,
