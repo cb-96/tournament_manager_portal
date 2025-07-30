@@ -53,6 +53,6 @@ class TournamentDashboardController(http.Controller):
         points = [s.points for s in standings]
         return request.render('tournament_manager_portal.tournament_dashboard_template', {
             'tournament': tournament,
-            'clubs': clubs,
-            'points': points,
+            'clubs': json.dumps(clubs),
+            'points': json.dumps(points),
         })

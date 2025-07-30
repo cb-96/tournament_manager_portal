@@ -13,10 +13,10 @@
                 var chart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: JSON.parse("{{ days|escapejs }}"),
+                        labels: <t t-raw="days">,
                         datasets: [{
                             label: 'Matches',
-                            data: JSON.parse("{{ counts|escapejs }}"),
+                            data: <t t-raw="counts">,
                             backgroundColor: 'rgba(75, 192, 192, 0.5)',
                             borderColor: 'rgba(75, 192, 192, 1)',
                             borderWidth: 1
@@ -43,7 +43,7 @@
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/jquery-bracket@0.11.1/dist/jquery.bracket.min.js"></script>
             <script type="text/javascript">
-                var bracketData = JSON.parse("{{ bracket_data|escapejs }}");
+                var bracketData = <t t-raw="bracket_data"/>;
                 // For simplicity, only show the first category's bracket
                 var catNames = Object.keys(bracketData);
                 if (catNames.length > 0) {
@@ -92,10 +92,10 @@
                 var chart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: {{ clubs|safe }},
+                        labels: <t t-raw="clubs"/>,
                         datasets: [{
                             label: 'Points',
-                            data: {{ points|safe }},
+                            data: <t t-raw="points"/>,
                             backgroundColor: 'rgba(54, 162, 235, 0.5)',
                             borderColor: 'rgba(54, 162, 235, 1)',
                             borderWidth: 1
