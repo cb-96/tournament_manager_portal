@@ -12,7 +12,7 @@
         'views/templates.xml',
         'views/backend_views.xml',
         'views/tournament_views.xml',
-        'views/tournament_dashboard_template.xml',
+        'views/frontend_dashboard_templates.xml',
         'views/club_portal_templates.xml',
     ],
     'installable': True,
