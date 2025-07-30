@@ -11,7 +11,6 @@
 	    'views/portal_views.xml',
         'views/templates.xml',
         'views/backend_views.xml',
-        'views/tournament_views.xml',
         'views/frontend_dashboard_templates.xml',
         'views/club_portal_templates.xml',
     ],
