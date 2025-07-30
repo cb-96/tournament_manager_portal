@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tournament Kanban View -->
+    <record id="view_tournament_kanban" model="ir.ui.view">
+        <field name="name">tournament.tournament.kanban</field>
+        <field name="model">tournament.tournament</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="tournament_type"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <strong><field name="name"/></strong>
+                            <div>Type: <field name="tournament_type"/></div>
+                            <div>Start: <field name="date_start"/></div>
+                            <div>End: <field name="date_end"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Tournament Graph View -->
+    <record id="view_tournament_graph" model="ir.ui.view">
+        <field name="name">tournament.tournament.graph</field>
+        <field name="model">tournament.tournament</field>
+        <field name="arch" type="xml">
+            <graph string="Tournaments by Type" type="bar">
+                <field name="tournament_type" type="row"/>
+                <field name="id" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Club Standing Graph View -->
+    <record id="view_club_standing_graph" model="ir.ui.view">
+        <field name="name">tournament.club.standing.graph</field>
+        <field name="model">tournament.club.standing</field>
+        <field name="arch" type="xml">
+            <graph string="Club Standings by Points" type="bar">
+                <field name="club_id" type="row"/>
+                <field name="points" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Club Standing Pivot View -->
+    <record id="view_club_standing_pivot" model="ir.ui.view">
+        <field name="name">tournament.club.standing.pivot</field>
+        <field name="model">tournament.club.standing</field>
+        <field name="arch" type="xml">
+            <pivot string="Club Standings Pivot">
+                <field name="club_id" type="row"/>
+                <field name="tournament_id" type="col"/>
+                <field name="points" type="measure"/>
+                <field name="wins" type="measure"/>
+                <field name="draws" type="measure"/>
+                <field name="losses" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+</odoo>
