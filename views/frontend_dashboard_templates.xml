@@ -5,31 +5,35 @@
         <t t-call="website.layout">
             <div class="container mt32 mb32">
                 <h2>Upcoming Matches Per Day</h2>
-                <canvas id="matchesPerDayChart" width="600" height="300"></canvas>
+                <t t-if="not days or not counts">
+                    <p>No upcoming matches scheduled.</p>
+                </t>
+                <t t-else="">
+                    <canvas id="matchesPerDayChart" width="600" height="300"></canvas>
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script type="text/javascript">
+                        var ctx = document.getElementById('matchesPerDayChart').getContext('2d');
+                        var chart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: JSON.parse("{{ days|escapejs }}"),
+                                datasets: [{
+                                    label: 'Matches',
+                                    data: JSON.parse("{{ counts|escapejs }}"),
+                                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: { beginAtZero: true }
+                                }
+                            }
+                        });
+                    </script>
+                </t>
             </div>
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script type="text/javascript">
-                var ctx = document.getElementById('matchesPerDayChart').getContext('2d');
-                var chart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: %s,
-                        datasets: [{
-                            label: 'Matches',
-                            data: %s,
-                            backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: { beginAtZero: true }
-                        }
-                    }
-                });
-            </script>
-            ''' %% (days, counts)"/>
         </t>
     </template>
 
@@ -38,45 +42,49 @@
         <t t-call="website.layout">
             <div class="container mt32 mb32">
                 <h2>Bracket for <t t-esc="tournament.name"/></h2>
-                <div id="bracket"></div>
-            </div>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-bracket@0.11.1/dist/jquery.bracket.min.css"/>
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/jquery-bracket@0.11.1/dist/jquery.bracket.min.js"></script>
-            <script type="text/javascript">
-                var bracketData = <t t-raw="bracket_data"/>;
-                // For simplicity, only show the first category's bracket
-                var catNames = Object.keys(bracketData);
-                if (catNames.length > 0) {
-                    var rounds = bracketData[catNames[0]];
-                    var teams = [];
-                    var results = [];
-                    var firstRound = rounds[Object.keys(rounds)[0]];
-                    for (var i = 0; i < firstRound.length; i++) {
-                        teams.push([firstRound[i].team1, firstRound[i].team2]);
-                    }
-                    for (var r = 0; r < Object.keys(rounds).length; r++) {
-                        var round = rounds[Object.keys(rounds)[r]];
-                        var roundResults = [];
-                        for (var m = 0; m < round.length; m++) {
-                            if (round[m].score1 !== null && round[m].score2 !== null) {
-                                roundResults.push([round[m].score1, round[m].score2]);
-                            } else {
-                                roundResults.push([null, null]);
+                <t t-if="not bracket_data or bracket_data == '{}'">
+                    <p>No bracket data available.</p>
+                </t>
+                <t t-else="">
+                    <div id="bracket"></div>
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-bracket@0.11.1/dist/jquery.bracket.min.css"/>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/jquery-bracket@0.11.1/dist/jquery.bracket.min.js"></script>
+                    <script type="text/javascript">
+                        var bracketData = JSON.parse('{{ bracket_data|escapejs }}');
+                        var catNames = Object.keys(bracketData);
+                        if (catNames.length > 0) {
+                            var rounds = bracketData[catNames[0]];
+                            var teams = [];
+                            var results = [];
+                            var firstRound = rounds[Object.keys(rounds)[0]];
+                            for (var i = 0; i < firstRound.length; i++) {
+                                teams.push([firstRound[i].team1, firstRound[i].team2]);
                             }
+                            for (var r = 0; r < Object.keys(rounds).length; r++) {
+                                var round = rounds[Object.keys(rounds)[r]];
+                                var roundResults = [];
+                                for (var m = 0; m < round.length; m++) {
+                                    if (round[m].score1 !== null && round[m].score2 !== null) {
+                                        roundResults.push([round[m].score1, round[m].score2]);
+                                    } else {
+                                        roundResults.push([null, null]);
+                                    }
+                                }
+                                results.push(roundResults);
+                            }
+                            $('#bracket').bracket({
+                                init: {
+                                    teams: teams,
+                                    results: results
+                                }
+                            });
+                        } else {
+                            $('#bracket').html('<p>No bracket data available.</p>');
                         }
-                        results.push(roundResults);
-                    }
-                    $('#bracket').bracket({
-                        init: {
-                            teams: teams,
-                            results: results
-                        }
-                    });
-                } else {
-                    $('#bracket').html('<p>No bracket data available.</p>');
-                }
-            </script>
+                    </script>
+                </t>
+            </div>
         </t>
     </template>
 
@@ -85,30 +93,35 @@
         <t t-call="website.layout">
             <div class="container mt32 mb32">
                 <h2>Tournament Dashboard: <t t-esc="tournament.name"/></h2>
-                <canvas id="clubPointsChart" width="600" height="300"></canvas>
+                <t t-if="not clubs or not points">
+                    <p>No standings available for this tournament.</p>
+                </t>
+                <t t-else="">
+                    <canvas id="clubPointsChart" width="600" height="300"></canvas>
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script type="text/javascript">
+                        var ctx = document.getElementById('clubPointsChart').getContext('2d');
+                        var chart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: JSON.parse("{{ clubs|escapejs }}"),
+                                datasets: [{
+                                    label: 'Points',
+                                    data: JSON.parse("{{ points|escapejs }}"),
+                                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: { beginAtZero: true }
+                                }
+                            }
+                        });
+                    </script>
+                </t>
             </div>
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script type="text/javascript">
-                var ctx = document.getElementById('clubPointsChart').getContext('2d');
-                var chart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: <t t-raw="clubs"/>,
-                        datasets: [{
-                            label: 'Points',
-                            data: <t t-raw="points"/>,
-                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: { beginAtZero: true }
-                        }
-                    }
-                });
-            </script>
         </t>
     </template>
 </odoo>

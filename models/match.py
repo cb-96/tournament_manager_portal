@@ -99,6 +99,7 @@ class Tournament(models.Model):
                     'team1_id': team1.id,
                     'team2_id': team2.id,
                     'date': match_datetime,
+                    'round_num': round_num,
                 })
                 match_idx += 1
             if match_idx >= len(matches):
@@ -120,6 +121,7 @@ class TournamentMatch(models.Model):
         ('scheduled', 'Scheduled'),
         ('done', 'Done')
     ], default='scheduled', help="Match state")
+    round_num = fields.Integer(string='Round', default=1, help="Round number for bracket/knockout tournaments")
 
     def get_result_display(self):
         """Return a string representation of the match result."""
